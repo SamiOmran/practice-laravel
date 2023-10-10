@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WeatherController;
 use Illuminate\Http\Request;
@@ -24,3 +25,5 @@ Route::get('get-weather', [WeatherController::class, 'index'])
     ->middleware('auth');
 
 Route::apiResource('users', UserController::class)->middleware('auth');
+
+Route::apiResource('articles', ArticleController::class)->middleware('auth');
