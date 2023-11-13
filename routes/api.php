@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\WeatherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,9 +21,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('get-weather', [WeatherController::class, 'index'])
-    ->middleware('auth');
+Route::group(['prefix' => 'v1', 'middleware' => 'auth'], function () {
+    Route::get('get-weather', [WeatherController::class, 'index']);
 
-Route::apiResource('users', UserController::class)->middleware('auth');
+    Route::apiResource('users', UserController::class);
 
-Route::apiResource('articles', ArticleController::class)->middleware('auth');
+    Route::apiResource('articles', ArticleController::class);
+});

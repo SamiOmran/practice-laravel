@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Http\Requests\WeatherIndexRequest;
-use App\Http\Resources\WeatherDetailsResource;
-use App\Services\WeatherServices;
+use App\Http\Requests\API\User\StoreUserRequest;
+use App\Services\UserServices;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class WeatherController extends Controller
+class UserController extends APIController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(WeatherIndexRequest $request, WeatherServices $service): JsonResource
+    public function index()
     {
-        $data = $service->getWeatherDetails($request);
 
-        return new WeatherDetailsResource($data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(StoreUserRequest $request, UserServices $services)
     {
-        //
+
     }
 
     /**

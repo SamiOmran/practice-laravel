@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\Article;
 
+use App\DTOs\ArticleDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreArticleRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,16 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'unique:articles,title', 'string'],
+            'text' => ['required', 'string'],
+            'image' => ['nullable', 'string'],
         ];
+    }
+
+    public function toDTO(): ArticleDTO
+    {
+        $data = $this->validated();
+
+        return ArticleDTO::from($data);
     }
 }
