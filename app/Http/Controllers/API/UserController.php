@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\User\StoreUserRequest;
+use App\Http\Requests\API\User\{
+    DestroyUserRequest,
+    IndexUserRequest,
+    ShowUserRequest,
+    UpdateUserRequest,
+};
+use App\Http\Resources\API\User\{
+    ListUsersResource,
+    ShowUserResource,
+};
+use App\Models\User;
 use App\Services\UserServices;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends APIController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexUserRequest $request, UserServices $service): JsonResource
     {
+        $data = $service->getUsers($request->toDTO());
 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(StoreUserRequest $request, UserServices $services)
-    {
-
+        return ListUsersResource::collection($data);
     }
 
     /**
@@ -35,32 +40,50 @@ class UserController extends APIController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ShowUserRequest $request, User $user, UserServices $service): JsonResource
     {
-        //
-    }
+        $user = $service->showUser($user);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return new ShowUserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user, UserServices $service): JsonResource
     {
-        //
+        $updated = $service->updateUser($user, $request->toDTO());
+
+        if ($updated) {
+            return response()->json([
+                'message' => 'User updated successfully',
+                'status' => '200',
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Error occuered while updating user',
+            'status' => '500',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DestroyUserRequest $request, User $user, UserServices $service): JsonResource
     {
-        //
+        $destroyed = $service->destroyUser($user);
+
+        if ($destroyed) {
+            return response()->json([
+                'message' => 'User deleted successfully',
+                'status' => '200',
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Error occuered while deleting user',
+            'status' => '500',
+        ]);
     }
 }

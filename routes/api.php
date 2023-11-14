@@ -26,5 +26,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth'], function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::apiResource('articles', ArticleController::class);
+    Route::apiResource('articles', ArticleController::class)->except('index');
 });
+
+Route::get('v1/articles', [ArticleController::class, 'index'])->name('articles.index');

@@ -21,7 +21,7 @@ class ArticleServices
 
     public function storeArticle(ArticleDTO $articleDTO): Article
     {
-        return Article::create($articleDTO->toArray());
+                return Article::create($articleDTO->toArray());
     }
 
     public function showArticle(Article $article): Article

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Article\{
     DestroyArticleRequest,
-    IndexArticlesRequest,
+    IndexArticleRequest,
     ShowArticleRequest,
     StoreArticleRequest,
     UpdateArticleRequest,
@@ -22,7 +22,7 @@ class ArticleController extends APIController
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexArticlesRequest $request, ArticleServices $service): JsonResource
+    public function index(IndexArticleRequest $request, ArticleServices $service): JsonResource
     {
         $data = $service->getArticles($request->toDTO());
 
