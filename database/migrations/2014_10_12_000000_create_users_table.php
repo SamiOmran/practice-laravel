@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('articles')->default(0);
             $table->string('country')->nullable();
+            $table->softDeletes();
         });
     }
 

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Optional;
+use Spatie\LaravelData\{
+    Data,
+    Optional,
+};
 
 class ArticleDTO extends Data
 {

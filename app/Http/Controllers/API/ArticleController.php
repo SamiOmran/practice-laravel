@@ -15,6 +15,7 @@ use App\Http\Resources\API\Article\{
 };
 use App\Models\Article;
 use App\Services\ArticleServices;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleController extends APIController
@@ -58,7 +59,7 @@ class ArticleController extends APIController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateArticleRequest $request, Article $article, ArticleServices $service): JsonResource
+    public function update(UpdateArticleRequest $request, Article $article, ArticleServices $service): JsonResponse
     {
         $updated = $service->updateArticle($article, $request->toDTO());
 
@@ -78,7 +79,7 @@ class ArticleController extends APIController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyArticleRequest $request, Article $article, ArticleServices $service): JsonResource
+    public function destroy(DestroyArticleRequest $request, Article $article, ArticleServices $service): JsonResponse
     {
         $destroyed = $service->destroyArticle($article);
 

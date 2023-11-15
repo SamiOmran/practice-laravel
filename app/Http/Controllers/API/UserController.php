@@ -8,12 +8,14 @@ use App\Http\Requests\API\User\{
     ShowUserRequest,
     UpdateUserRequest,
 };
+use App\Http\Requests\API\User\StoreUserRequest;
 use App\Http\Resources\API\User\{
     ListUsersResource,
     ShowUserResource,
 };
 use App\Models\User;
 use App\Services\UserServices;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,9 +34,11 @@ class UserController extends APIController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request, UserServices $service): JsonResource
     {
-        //
+        $user = $service->storeUser($request->toDTO());
+
+        return new ShowUserResource($user);
     }
 
     /**
@@ -50,7 +54,7 @@ class UserController extends APIController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user, UserServices $service): JsonResource
+    public function update(UpdateUserRequest $request, User $user, UserServices $service): JsonResponse
     {
         $updated = $service->updateUser($user, $request->toDTO());
 
@@ -70,7 +74,7 @@ class UserController extends APIController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyUserRequest $request, User $user, UserServices $service): JsonResource
+    public function destroy(DestroyUserRequest $request, User $user, UserServices $service): JsonResponse
     {
         $destroyed = $service->destroyUser($user);
 
