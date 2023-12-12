@@ -1,0 +1,17 @@
+{
+    "preset": "psr12",
+    "exclude": [
+        "tests/",
+        "bootstrap/",
+        "database/migrations"
+    ],
+    "rules": {
+        "single_import_per_statement": false,
+        "simplified_null_return": true,
+        "braces": true,
+        "new_with_braces": {
+            "anonymous_class": false,
+            "named_class": false
+        }
+    }
+}

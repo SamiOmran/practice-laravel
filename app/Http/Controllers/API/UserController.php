@@ -16,7 +16,6 @@ use App\Http\Resources\API\User\{
 use App\Models\User;
 use App\Services\UserServices;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends APIController
