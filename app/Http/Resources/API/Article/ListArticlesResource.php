@@ -20,6 +20,7 @@ class ListArticlesResource extends JsonResource
         return [
             'id' => $article->id,
             'title' => $article->title,
+            'author' => $article->author
         ];
     }
 }
