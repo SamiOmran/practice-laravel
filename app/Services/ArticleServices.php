@@ -21,7 +21,11 @@ class ArticleServices
 
     public function storeArticle(ArticleDTO $articleDTO): Article
     {
-        return Article::create($articleDTO->toArray());
+        /** @var \App\Models\User */
+        $author = auth()->user();
+        $articleData = [...$articleDTO->toArray(), 'author' => $author->id];
+
+        return Article::create($articleData);
     }
 
     public function showArticle(Article $article): Article

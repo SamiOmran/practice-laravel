@@ -15,6 +15,7 @@ class ArticleDTO extends Data
         public readonly string|Optional $title,
         public readonly string|Optional $text,
         public readonly string|Optional $image,
+        public readonly string|Optional $author,
     ) {
         //
     }

@@ -18,6 +18,7 @@ class Article extends Model
         'title',
         'text',
         'image',
+        'author',
     ];
 
     public function author(): BelongsTo
