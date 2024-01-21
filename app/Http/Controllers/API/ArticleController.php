@@ -61,7 +61,6 @@ class ArticleController extends APIController
         }
 
         return $this->sendFailure('Error occuered while updating article', 500);
-
     }
 
     /**
@@ -76,6 +75,5 @@ class ArticleController extends APIController
         }
 
         return $this->sendFailure('Error occuered while deleting article', 500);
-
     }
 }

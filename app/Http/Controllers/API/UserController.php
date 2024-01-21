@@ -84,5 +84,4 @@ class UserController extends APIController
 
         return $this->sendResponse('Articles count returned successfully', 200, ['articles Count' => $count]);
     }
-
 }
