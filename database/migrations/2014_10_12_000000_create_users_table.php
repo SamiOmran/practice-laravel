@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('articles')->default(0);
+            $table->integer('articles_count')->default(0);
             $table->string('country')->nullable();
             $table->softDeletes();
         });
