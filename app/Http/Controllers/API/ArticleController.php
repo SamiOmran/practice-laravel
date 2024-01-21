@@ -16,44 +16,37 @@ use App\Http\Resources\API\Article\{
 use App\Models\Article;
 use App\Services\ArticleServices;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleController extends APIController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexArticleRequest $request, ArticleServices $service): JsonResource
+    public function index(IndexArticleRequest $request, ArticleServices $service): JsonResponse
     {
         $data = $service->getArticles($request->toDTO());
 
-        return ListArticlesResource::collection($data);
+        return $this->sendResponse('Success retrieving articles', 200, ListArticlesResource::collection($data));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreArticleRequest $request, ArticleServices $service): JsonResource
+    public function store(StoreArticleRequest $request, ArticleServices $service): JsonResponse
     {
         $article = $service->storeArticle($request->toDTO());
 
-        $data = [
-            'message' => 'Article created successfully',
-            'status' => 201,
-            'body' => $article,
-        ];
-
-        return new ShowArticleResource($data);
+        return $this->sendResponse('Success storing new article', 201, new ShowArticleResource($article));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ShowArticleRequest $request, Article $article, ArticleServices $service): JsonResource
+    public function show(ShowArticleRequest $request, Article $article, ArticleServices $service): JsonResponse
     {
         $article = $service->showArticle($article);
 
-        return new ShowArticleResource($article);
+        return $this->sendResponse('Success retrieving article', 200, new ShowArticleResource($article));
     }
 
     /**
@@ -64,16 +57,11 @@ class ArticleController extends APIController
         $updated = $service->updateArticle($article, $request->toDTO());
 
         if ($updated) {
-            return response()->json([
-                'message' => 'Article updated successfully',
-                'status' => '200',
-            ]);
+            return $this->sendResponse('Article updated successfully', 202, new ShowArticleResource($article));
         }
 
-        return response()->json([
-            'message' => 'Error occuered while updating article',
-            'status' => '500',
-        ]);
+        return $this->sendFailure('Error occuered while updating article', 500);
+
     }
 
     /**
@@ -84,15 +72,10 @@ class ArticleController extends APIController
         $destroyed = $service->destroyArticle($article);
 
         if ($destroyed) {
-            return response()->json([
-                'message' => 'Article deleted successfully',
-                'status' => '200',
-            ]);
+            return $this->sendResponse('Article deleted successfully', 200);
         }
 
-        return response()->json([
-            'message' => 'Error occuered while deleting article',
-            'status' => '500',
-        ]);
+        return $this->sendFailure('Error occuered while deleting article', 500);
+
     }
 }

@@ -17,38 +17,37 @@ use App\Models\User;
 use App\Services\UserServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends APIController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexUserRequest $request, UserServices $service): JsonResource
+    public function index(IndexUserRequest $request, UserServices $service): JsonResponse
     {
         $data = $service->getUsers($request->toDTO());
 
-        return ListUsersResource::collection($data);
+        return $this->sendResponse('Success retrieving users', 200, ListUsersResource::collection($data));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request, UserServices $service): JsonResource
+    public function store(StoreUserRequest $request, UserServices $service): JsonResponse
     {
         $user = $service->storeUser($request->toDTO());
 
-        return new ShowUserResource($user);
+        return $this->sendResponse('Success storing new user', 201, new ShowUserResource($user));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ShowUserRequest $request, User $user, UserServices $service): JsonResource
+    public function show(ShowUserRequest $request, User $user, UserServices $service): JsonResponse
     {
         $user = $service->showUser($user);
 
-        return new ShowUserResource($user);
+        return $this->sendResponse('Success retrieving user', 200, new ShowUserResource($user));
     }
 
     /**
@@ -59,17 +58,10 @@ class UserController extends APIController
         $updated = $service->updateUser($user, $request->toDTO());
 
         if ($updated) {
-            return response()->json([
-                'message' => 'User updated successfully',
-                'status' => '200',
-                'data' => new ShowUserResource($user),
-            ]);
+            return $this->sendResponse('User updated successfully', 202, new ShowUserResource($user));
         }
 
-        return response()->json([
-            'message' => 'Error occuered while updating user',
-            'status' => '500',
-        ]);
+        return $this->sendFailure('Error occuered while updating user', 500);
     }
 
     /**
@@ -80,29 +72,17 @@ class UserController extends APIController
         $destroyed = $service->destroyUser($user);
 
         if ($destroyed) {
-            return response()->json([
-                'message' => 'User deleted successfully',
-                'status' => '200',
-            ]);
+            return $this->sendResponse('User deleted successfully', 200);
         }
 
-        return response()->json([
-            'message' => 'Error occuered while deleting user',
-            'status' => '500',
-        ]);
+        return $this->sendFailure('Error occuered while deleting user', 500);
     }
 
     public function numberArticels(Request $request, User $user): JsonResponse
     {
         $count = $user->articles_count;
 
-        return response()->json([
-            'message' => 'Articles count returned successfully',
-            'status' => 200,
-            'data' => [
-                'Articles Count' => $count
-            ]
-        ]);
+        return $this->sendResponse('Articles count returned successfully', 200, ['articles Count' => $count]);
     }
 
 }

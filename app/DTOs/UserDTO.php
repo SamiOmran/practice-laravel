@@ -15,6 +15,9 @@ class UserDTO extends Data
         public readonly string|Optional $name,
         public readonly string|Optional $email,
         public readonly string|Optional $password,
+        public readonly string|Optional $country,
+        public readonly int|Optional $articlesCount,
+
     ) {
         //
     }
