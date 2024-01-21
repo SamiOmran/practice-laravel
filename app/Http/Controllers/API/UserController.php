@@ -61,6 +61,7 @@ class UserController extends APIController
             return response()->json([
                 'message' => 'User updated successfully',
                 'status' => '200',
+                'data' => new ShowUserResource($user),
             ]);
         }
 
