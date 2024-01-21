@@ -6,9 +6,9 @@ use App\Http\Requests\API\User\{
     DestroyUserRequest,
     IndexUserRequest,
     ShowUserRequest,
+    StoreUserRequest,
     UpdateUserRequest,
 };
-use App\Http\Requests\API\User\StoreUserRequest;
 use App\Http\Resources\API\User\{
     ListUsersResource,
     ShowUserResource,
@@ -16,6 +16,7 @@ use App\Http\Resources\API\User\{
 use App\Models\User;
 use App\Services\UserServices;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends APIController
@@ -90,4 +91,18 @@ class UserController extends APIController
             'status' => '500',
         ]);
     }
+
+    public function numberArticels(Request $request, User $user): JsonResponse
+    {
+        $count = $user->articles_count;
+
+        return response()->json([
+            'message' => 'Articles count returned successfully',
+            'status' => 200,
+            'data' => [
+                'Articles Count' => $count
+            ]
+        ]);
+    }
+
 }

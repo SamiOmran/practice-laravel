@@ -25,6 +25,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth'], function () {
     Route::get('get-weather', [WeatherController::class, 'index']);
 
     Route::apiResource('users', UserController::class);
+    Route::get('users/{user}/articles-count', [UserController::class, 'numberArticels']);
 
     Route::apiResource('articles', ArticleController::class)->except('index');
 });
