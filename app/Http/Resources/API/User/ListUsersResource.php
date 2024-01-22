@@ -20,6 +20,7 @@ class ListUsersResource extends JsonResource
         return [
             'id' => $user->id,
             'name' => $user->name,
+            'articles_count' => $user->articles_count,
         ];
     }
 }

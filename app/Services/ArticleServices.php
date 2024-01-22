@@ -23,6 +23,7 @@ class ArticleServices
     {
         /** @var \App\Models\User */
         $author = auth()->user();
+        $author->update(['articles_count' => $author->articles_count + 1]);
         $articleData = [...$articleDTO->toArray(), 'author' => $author->id];
 
         return Article::create($articleData);

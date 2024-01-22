@@ -78,10 +78,10 @@ class UserController extends APIController
         return $this->sendFailure('Error occuered while deleting user', 500);
     }
 
-    public function numberArticels(Request $request, User $user): JsonResponse
+    public function numberArticels(Request $request, User $user, UserServices $service): JsonResponse
     {
-        $count = $user->articles_count;
+        $count = $service->getArticlesCount($user);
 
-        return $this->sendResponse('Articles count returned successfully', 200, ['articles Count' => $count]);
+        return $this->sendResponse('Articles count returned successfully', 200, ['Articles Count' => $count]);
     }
 }
