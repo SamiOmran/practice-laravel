@@ -187,4 +187,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'seeder' => [
+        'size' => env('SEEDER_SIZE', 10),
+    ],
 ];
