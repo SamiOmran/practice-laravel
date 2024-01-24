@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\ArticleController;
-use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\API\WeatherController;
+use App\Http\Controllers\API\{
+    ArticleController,
+    UserController,
+    WeatherController,
+    CommentController,
+};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +28,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth'], function () {
     Route::get('get-weather', [WeatherController::class, 'index']);
 
     Route::apiResource('users', UserController::class);
+    Route::apiResource('comments', CommentController::class);
     Route::get('users/{user}/articles-count', [UserController::class, 'numberArticels']);
 
     Route::apiResource('articles', ArticleController::class)->except('index');
