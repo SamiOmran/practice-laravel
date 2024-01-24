@@ -12,6 +12,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(config('app.seeder.size'))->create();
+        User::factory(config('app.seeders.users'))->create();
     }
 }

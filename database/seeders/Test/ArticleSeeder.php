@@ -12,6 +12,6 @@ class ArticleSeeder extends Seeder
      */
     public function run(): void
     {
-        Article::factory(config('app.seeder.size'))->create();
+        Article::factory(config('app.seeders.data'))->create();
     }
 }

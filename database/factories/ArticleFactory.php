@@ -20,7 +20,7 @@ class ArticleFactory extends Factory
         return [
             'title' => fake()->name(),
             'text' => fake()->text(),
-            'image' => fake()->image(),
+            'image' => fake()->image(storage_path('app\public\articles')),
             'author' => User::inRandomOrder()->first()->id,
         ];
     }

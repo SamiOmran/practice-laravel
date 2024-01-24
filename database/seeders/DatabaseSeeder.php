@@ -10,6 +10,8 @@ use Database\Seeders\Test\{
     UserSeeder,
 };
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +20,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $articlesDirPath = 'app/public/articles';
+        if (Storage::exists($articlesDirPath)) {
+            Storage::deleteDirectory($articlesDirPath);
+            Storage::makeDirectory($articlesDirPath);
+        }
+
         $this->call([
             UserSeeder::class,
             ArticleSeeder::class,
@@ -34,5 +42,13 @@ class DatabaseSeeder extends Seeder
                 'country' => 'Palestine',
             ]);
         }
+
+        // sql command to update user's article_count
+        DB::select('
+            update users  
+            set articles_count = (
+            select count(author) from articles 
+            where users.id = articles.author)
+        ');
     }
 }
