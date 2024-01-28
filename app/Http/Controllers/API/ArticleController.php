@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Article\{
     DestroyArticleRequest,
+    IndexArticleCommentsRequest,
     IndexArticleRequest,
     ShowArticleRequest,
     StoreArticleRequest,
@@ -13,8 +14,10 @@ use App\Http\Resources\API\Article\{
     ListArticlesResource,
     ShowArticleResource,
 };
+use App\Http\Resources\API\Comment\ListCommentsResource;
 use App\Models\Article;
 use App\Services\ArticleServices;
+use App\Services\CommentServices;
 use Illuminate\Http\JsonResponse;
 
 class ArticleController extends APIController
@@ -76,4 +79,10 @@ class ArticleController extends APIController
 
         return $this->sendFailure('Error occuered while deleting article', 500);
     }
-}
+
+    public function listComments(IndexArticleCommentsRequest $request, Article $article, CommentServices $service): JsonResponse
+    {
+        $data = $service->getComments($request->toDTO(), article: $article);
+
+        return $this->sendResponse('Comments returned successfully', 200, ListCommentsResource::collection($data)->response()->getData(true));
+    }}

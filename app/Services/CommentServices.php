@@ -6,17 +6,24 @@ namespace App\Services;
 
 use App\DTOs\CommentDTO;
 use App\DTOs\PaginationDTO;
+use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CommentServices
 {
-    public function getComments(PaginationDTO $paginationDTO): LengthAwarePaginator
+    public function getComments(PaginationDTO $paginationDTO, Article $article = null): LengthAwarePaginator
     {
+        if ($article) {
+            $query = $article->comments();
+        } else {
+            $query = Comment::query();
+        }
+
         $page = $paginationDTO->page;
         $pageSize = $paginationDTO->pageSize;
 
-        return Comment::query()->paginate($pageSize, page: $page);
+        return $query->paginate($pageSize, page: $page);
     }
 
     public function storeComment(CommentDTO $commentDTO): Comment

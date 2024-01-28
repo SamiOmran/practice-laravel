@@ -30,12 +30,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth'], function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('comments', CommentController::class);
 
-    Route::group(['prefix' => 'users/{user}/'], function() {
-        Route::get('articles-count', [UserController::class, 'numberArticles']);
-        Route::get('articles', [UserController::class, 'listArticles']);
+    Route::group(['prefix' => 'users/{user}/', 'as' => 'users.'], function() {
+        Route::get('articles-count', [UserController::class, 'numberArticles'])->name('articlesCount');
+        Route::get('articles', [UserController::class, 'listArticles'])->name('articles');
     });
 
     Route::apiResource('articles', ArticleController::class)->except('index');
+    Route::group(['prefix' => 'articles/{article}/', 'as' => 'articles.'], function () {
+        Route::get('comments', [ArticleController::class, 'listComments'])->name('comments');
+    });
 });
 
 Route::get('v1/articles', [ArticleController::class, 'index'])->name('articles.index');
