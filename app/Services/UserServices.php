@@ -42,7 +42,8 @@ class UserServices
 
     public function getArticlesCount(User $user): int
     {
-        $count = Article::where('author', $user->id)->count();
+        // $count = Article::where('author', $user->id)->count();
+        $count = $user->articles_count;
 
         return $count;
     }

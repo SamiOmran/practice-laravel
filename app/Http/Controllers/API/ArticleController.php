@@ -26,7 +26,7 @@ class ArticleController extends APIController
     {
         $data = $service->getArticles($request->toDTO());
 
-        return $this->sendResponse('Success retrieving articles', 200, ListArticlesResource::collection($data));
+        return $this->sendResponse('Success retrieving articles', 200, ListArticlesResource::collection($data)->response()->getData(true));
     }
 
     /**

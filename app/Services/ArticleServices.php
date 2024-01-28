@@ -4,19 +4,30 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\ArticleDTO;
-use App\DTOs\PaginationDTO;
-use App\Models\Article;
+use App\DTOs\{
+    ArticleDTO,
+    PaginationDTO,
+};
+use App\Models\{
+    Article,
+    User,
+};
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ArticleServices
 {
-    public function getArticles(PaginationDTO $paginationDTO): LengthAwarePaginator
+    public function getArticles(PaginationDTO $paginationDTO, User $user = null): LengthAwarePaginator
     {
+        if ($user) {
+            $query = $user->articles();
+        } else {
+            $query = Article::query();
+        }
+
         $page = $paginationDTO->page;
         $pageSize = $paginationDTO->pageSize;
 
-        return Article::query()->paginate($pageSize, page: $page);
+        return $query->paginate(perPage: $pageSize, page: $page);
     }
 
     public function storeArticle(ArticleDTO $articleDTO): Article

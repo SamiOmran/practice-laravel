@@ -26,7 +26,7 @@ class CommentController extends APIController
     {
         $data = $service->getComments($request->toDTO());
 
-        return $this->sendResponse('Success retrieving comments', 200, ListCommentsResource::collection($data));
+        return $this->sendResponse('Success retrieving comments', 200, ListCommentsResource::collection($data)->response()->getData(true));
     }
 
     /**

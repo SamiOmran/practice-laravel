@@ -9,14 +9,21 @@ use App\Http\Requests\API\User\{
     StoreUserRequest,
     UpdateUserRequest,
 };
+use App\Http\Requests\API\User\IndexUserArticlesRequest;
+use App\Http\Resources\API\Article\ListArticlesResource;
 use App\Http\Resources\API\User\{
     ListUsersResource,
     ShowUserResource,
 };
 use App\Models\User;
-use App\Services\UserServices;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Services\{
+    ArticleServices,
+    UserServices,
+};
+use Illuminate\Http\{
+    JsonResponse,
+    Request,
+};
 
 class UserController extends APIController
 {
@@ -27,7 +34,7 @@ class UserController extends APIController
     {
         $data = $service->getUsers($request->toDTO());
 
-        return $this->sendResponse('Success retrieving users', 200, ListUsersResource::collection($data));
+        return $this->sendResponse('Success retrieving users', 200, ListUsersResource::collection($data)->response()->getData(true));
     }
 
     /**
@@ -78,10 +85,17 @@ class UserController extends APIController
         return $this->sendFailure('Error occuered while deleting user', 500);
     }
 
-    public function numberArticels(Request $request, User $user, UserServices $service): JsonResponse
+    public function numberArticles(Request $request, User $user, UserServices $service): JsonResponse
     {
         $count = $service->getArticlesCount($user);
 
         return $this->sendResponse('Articles count returned successfully', 200, ['Articles Count' => $count]);
+    }
+
+    public function listArticles(IndexUserArticlesRequest $request, User $user, ArticleServices $service): JsonResponse
+    {
+        $data = $service->getArticles($request->toDTO(), user: $user);
+
+        return $this->sendResponse('Articles returned successfully', 200, ListArticlesResource::collection($data)->response()->getData(true));
     }
 }

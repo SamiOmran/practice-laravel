@@ -29,7 +29,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth'], function () {
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('comments', CommentController::class);
-    Route::get('users/{user}/articles-count', [UserController::class, 'numberArticels']);
+
+    Route::group(['prefix' => 'users/{user}/'], function() {
+        Route::get('articles-count', [UserController::class, 'numberArticles']);
+        Route::get('articles', [UserController::class, 'listArticles']);
+    });
 
     Route::apiResource('articles', ArticleController::class)->except('index');
 });
